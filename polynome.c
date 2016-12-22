@@ -6,29 +6,54 @@
 typedef int polynome[DEGREMAX];
 
 void isPolynomeCorrect(void);
+void triTableau(char *);
 
 int main(void){
-	/*int c;
+	int c;
 	int i = 0;
-	char pol[DEGREMAX];
-	int polynomes[10][DEGREMAX];
+	int j = 0;
+	char tousLesC[200]; //tableau contenant tous les caractères entrées sur l'ES
+	char tableauTrie[2][DEGREMAX];
+	int polynomes[10][2][DEGREMAX]; /*tableau contenant tous les polynômes (10 max).Le 2 correspond à un 
+									 * tableau comprenant les coefficients et les puissances. 
+									 */
 	printf("Entrez un polynôme :\n");
 	do{
 		if((c=getchar()) == '\n'){
-			polynomes[i] = pol;
+			if(isPolynomeCorrect(tousLesC)){
+				triTableau(tousLesC, tableauTrie);
+				polynomes[i] = tableauTrie;
+			}
+			else{
+				printf ("ce n\'est pas un polynome valide\n");
+				return EXIT_FAILURE;
+			}
+			
+		}
+		else{
+			tousLesC[j] = getchar();
+			j++;
 		}
 	}
-	while ((c=getchar()) != EOF);*/
-	
-	isPolynomeCorrect();
+	while ((c=getchar()) != EOF);
 	
 	return EXIT_SUCCESS;
 }
 
-void isPolynomeCorrect(void){
+/* Fonction qui permet de trier ce que l'utilisateur à écrit sur l'ES
+ * en récupérant seulement les chiffres en faisant attention à différencier les 
+ * coefficients des puissances.
+ */
+void triTableau(char * tabATrier, char * tabTrier[DEGREMAX]){
+	for(int i = 0; i < 200; i++){
+		
+	}
+}
+
+void isPolynomeCorrect(char * request){
 	int err;
 	regex_t preg;
-	const char *str_request = "3*x^24 - 4x^3 + 5*x^2 + 43x^10";
+	const char *str_request = (string)request;
 	const char *str_regex = "[\s*[0-9]\*?*x[\\^[0-9]+]?\s*\+|\-\s*]+";
 	
 	err = regcomp (&preg, str_regex, REG_NOSUB | REG_EXTENDED);
