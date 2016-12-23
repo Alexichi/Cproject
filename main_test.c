@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <math.h>
 
 #define DEGREMAX 5			/* en realite : DEGREMAX - 1, si DEGREMAX = 5, le degree reel max est 4, on commence a puissance 0 */
 #define ENTREEMAX 200
@@ -45,25 +46,29 @@ void triPoly(char * tabIn, int * tabOut)
 {
 	int coef = 0;
 	int power = 0;
+	int j = 1;
 	
 	for(int i = 0; i < ENTREEMAX; i++)
 	{
-		if( (i != 0) && (tabIn[i] == 'x') && isdigit(tabIn[i-1]) )
+		j = 1;
+		if( tabIn[i] == 'x')
 		{
-			coef = tabIn[i-1] - '0';
-			power = tabIn[i+2] - '0';
+			coef = 0;
+			if( (i != 0) && isdigit(tabIn[i-1]) )
+			{
+				while( isdigit(tabIn[i-j]) ) // lire d'un decalage de j temps qu'on a des digit
+				{
+					coef = coef + (tabIn[i-j]-'0')*pow(10.0, j-1); // exemple pour comprendre : 112 = 10^3 + 10^2 + 2*10^1
+					j++;	
+				}
+				power = tabIn[i+2] - '0';
+			}
+			else 			// on a rien devant le x
+			{
+				coef = 1;
+				power = tabIn[i+2] - '0';
+			}
 		}
-		else if ( (tabIn[i] == 'x') && isdigit(tabIn[i-1]) )
-		{
-			coef = 1;
-			power = tabIn[i+2] - '0';
-		}
-		else if ( (tabIn[i] == 'x') && !isdigit(tabIn[i-1]) )
-		{
-			coef = 1;
-			power = tabIn[i+2] - '0';
-		}
-		
 		tabOut[power] = coef;
 	}
 }
