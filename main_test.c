@@ -58,6 +58,12 @@ void triPoly(char * tabIn, int * tabOut)
 			coef = 1;
 			power = tabIn[i+2] - '0';
 		}
+		else if ( (tabIn[i] == 'x') && !isdigit(tabIn[i-1]) )
+		{
+			coef = 1;
+			power = tabIn[i+2] - '0';
+		}
+		
 		tabOut[power] = coef;
 	}
 }
@@ -86,4 +92,3 @@ int main(void)
 	
 	return 0;
 }
-
