@@ -56,7 +56,7 @@ void triPoly(char * tabIn, int * tabOut)
 			coef = 0;
 			if( (i != 0) && isdigit(tabIn[i-1]) )
 			{
-				while( isdigit(tabIn[i-j]) ) // lire d'un decalage de j temps qu'on a des digit
+				while( isdigit(tabIn[i-j]) ) // lire d'un decalage de j tant qu'on a des digit
 				{
 					coef = coef + (tabIn[i-j]-'0')*pow(10.0, j-1); // exemple pour comprendre : 112 = 10^3 + 10^2 + 2*10^1
 					j++;	
@@ -92,8 +92,5 @@ int main(void)
 	{
 		printf("Ordre : %d	Coeff : %d\n", i, p[i]);
 	}
-	
-	
-	
 	return 0;
 }
