@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  * 
  * 
- * polynome de test :
+ * polynomes de test :
  * -2x+x^2+3*x^3
  * -5*x+5*x^7-6*x^3
  * 
@@ -30,13 +30,7 @@
  * à cet indice sera le coefficient devant la variable x
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <math.h>
-
-#define DEGREMAX 10			/* en realite : DEGREMAX - 1, si DEGREMAX = 5, le degree reel max est 4, on commence a puissance 0 */
-#define ENTREEMAX 200
+#include "operations.h"
 
 void init(int * tab, int size)
 {
@@ -109,8 +103,13 @@ void triPoly(char * tabIn, int * tabOut)
 
 int main(void)
 {
-	char saisie[ENTREEMAX] = " ";
-	int p[DEGREMAX];
+	int p[] = {0,1,8,0,0,5,0,0,0,3};
+	int q[] = {2,1,5,0,6,5,0,23,0,3};
+	int res[] = {0};
+	somme(p,q, res);
+	ecriture(res);
+	/*char saisie[ENTREEMAX] = " ";
+	polynome p;
 	init(p, DEGREMAX);
 	int c = 0;
 	int i = 0;
@@ -124,6 +123,6 @@ int main(void)
 	for(int i = 0; i < DEGREMAX; i++)
 	{
 		printf("Ordre : %d	Coeff : %d\n", i, p[i]);
-	}
-	return 0;
+	}*/
+	return EXIT_SUCCESS;
 }
