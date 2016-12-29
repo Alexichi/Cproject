@@ -61,12 +61,34 @@ void triPoly(char * tabIn, int * tabOut)
 					coef = coef + (tabIn[i-j]-'0')*pow(10.0, j-1); // exemple pour comprendre : 112 = 10^3 + 10^2 + 2*10^1
 					j++;	
 				}
-				power = tabIn[i+2] - '0';
+				if( tabIn[i-j] == '-' )
+				{
+					coef = -coef;
+				}
+				if( tabIn[i+1] == '^' )
+				{
+					power = tabIn[i+2] - '0';
+				}
+				else
+				{
+					power = 1;
+				}
 			}
 			else 			// on a rien devant le x
 			{
 				coef = 1;
-				power = tabIn[i+2] - '0';
+				if( tabIn[i-1] == '-' )
+				{
+					coef = -coef;
+				}
+				if( tabIn[i+1] == '^' )
+				{
+					power = tabIn[i+2] - '0';
+				}
+				else
+				{
+					power = 1;
+				}
 			}
 		}
 		tabOut[power] = coef;
