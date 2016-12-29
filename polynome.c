@@ -89,7 +89,7 @@ int isPolynomeCorrect(char * request){
 	int err;
 	regex_t preg;
 	const char *str_request = request;
-	const char *str_regex = "[\s*[0-9]\*?*x[\\^[0-9]+]?\s*\+|\-\s*]+";
+	const char *str_regex = "[\\s*[0-9]\\*?*x[\\^[0-9]+]?\\s*\\+|\\-\\s*]+";
 	
 	err = regcomp (&preg, str_regex, REG_NOSUB | REG_EXTENDED);
 	if (err == 0){

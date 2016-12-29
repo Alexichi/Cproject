@@ -19,6 +19,10 @@
  * MA 02110-1301, USA.
  * 
  * 
+ * polynome de test :
+ * -2x+x^2+3*x^3
+ * -5*x+5*x^7-6*x^3
+ * 
  */
 
 
@@ -31,7 +35,7 @@
 #include <ctype.h>
 #include <math.h>
 
-#define DEGREMAX 5			/* en realite : DEGREMAX - 1, si DEGREMAX = 5, le degree reel max est 4, on commence a puissance 0 */
+#define DEGREMAX 10			/* en realite : DEGREMAX - 1, si DEGREMAX = 5, le degree reel max est 4, on commence a puissance 0 */
 #define ENTREEMAX 200
 
 void init(int * tab, int size)
@@ -47,18 +51,25 @@ void triPoly(char * tabIn, int * tabOut)
 	int coef = 0;
 	int power = 0;
 	int j = 1;
+	int k = 1; //incrément pour savoir la présence d'un *
 	
 	for(int i = 0; i < ENTREEMAX; i++)
 	{
 		j = 1;
+		k = 1;
 		if( tabIn[i] == 'x')
 		{
 			coef = 0;
-			if( (i != 0) && isdigit(tabIn[i-1]) )
+			if( tabIn[i-1] == '*')
+			{
+					k = 2;
+					j= 2;
+			}
+			if( (i != 0) && isdigit(tabIn[i-k]) )
 			{
 				while( isdigit(tabIn[i-j]) ) // lire d'un decalage de j tant qu'on a des digit
 				{
-					coef = coef + (tabIn[i-j]-'0')*pow(10.0, j-1); // exemple pour comprendre : 112 = 10^3 + 10^2 + 2*10^1
+					coef = coef + (tabIn[i-j]-'0')*pow(10.0, j-k); // exemple pour comprendre : 112 = 10^3 + 10^2 + 2*10^1
 					j++;	
 				}
 				if( tabIn[i-j] == '-' )
