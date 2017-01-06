@@ -1,24 +1,7 @@
 /*
  * main_test.c
- * 
- * Copyright 2016 Axel <axel@axel-GP62-6QE>
- * 
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301, USA.
- * 
- * 
+ *
+ *  
  * polynomes de test :
  * -2x+x^2+3*x^3
  * -5*x+5*x^7-6*x^3
@@ -26,9 +9,16 @@
  */
 
 
+/* Lignes de commandes de contruction avec plusieurs fichiers c
+ * gcc -Wall -c *.c -lSDL  -lsndfile -lncurses -std=c99 -lm
+ * gcc -Wall -std=c99 -o main_test *.o  `sdl2-config --cflags --libs` -lsndfile -lncurses -lm
+ */
+
+
 /* Le degré du polynôme sera l'indice du tableau et la valeur 
  * à cet indice sera le coefficient devant la variable x
  */
+
 
 #include "operations.h"
 
@@ -103,8 +93,8 @@ void triPoly(char * tabIn, int * tabOut)
 
 int main(void)
 {
-	int p[] = {0,1,8,0,0,5,0,0,0,3};
-	int q[] = {2,1,5,0,6,5,0,23,0,3};
+	int p[] = {0,1,8,0,0,5,4,0,0,3};
+	int q[] = {0,1,5,0,6,5,0,23,0,3};
 	int res[] = {0};
 	somme(p,q, res);
 	ecriture(res);

@@ -7,6 +7,13 @@
 typedef int polynome[DEGREMAX];
 #define ENTREEMAX 200
 
-void somme( int* , int* , int* );
-void ecriture (int* p);
 
+
+void somme( int* , int* , int* );
+void difference(int* , int* , int* );
+void produit( int* , int* , int* );
+void derivation( int* , int* );
+void integration( int* , int* );
+void divEucl( int* , int* , int* );
+void ecriture (int* p);
+void horner();

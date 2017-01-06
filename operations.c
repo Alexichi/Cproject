@@ -7,9 +7,37 @@ void somme( int* p, int* q, int* res){
 	}
 }
 
-void ecriture (int* p){
-	for(int i = 0; i<DEGREMAX-1; i++){
-		printf("%d*x^%d+", p[i], i);
-	}
-	printf("%d*x^%d",p[DEGREMAX-1],DEGREMAX-1);
+void difference(int* p, int* q, int* res){
+	
 }
+
+void produit( int* p, int* q, int* res){
+	
+}
+
+void derivation( int* p, int* res){
+	
+}
+
+void integration( int* p, int* res){
+	
+}
+
+void divEucl( int* p, int* q, int* res){
+	
+}
+
+//void factorisation(int* p, int* res){}
+
+void ecriture (int* p){
+	for(int i = DEGREMAX-2; i>=0; i--){
+		if(p[i] != 0){
+			printf("%dx^%d + ", p[i], i);
+		}
+	}
+	printf("%d ",p[0]);
+}
+
+void horner(){}
+
+
