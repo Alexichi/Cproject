@@ -93,10 +93,11 @@ void triPoly(char * tabIn, int * tabOut)
 
 int main(void)
 {
-	int p[] = {0,1,8,0,0,5,4,0,0,3};
-	int q[] = {0,1,5,0,6,5,0,23,0,3};
-	int res[] = {0};
-	somme(p,q, res);
+	int p[] = {3,2,7,3,8,0,0,0,0,0};
+	int q[] = {4,3,0,0,0,0,0,0,0,0};
+	int res[10] ;
+	init(res, 10);
+	produit(p,q, res);
 	ecriture(res);
 	/*char saisie[ENTREEMAX] = " ";
 	polynome p;
