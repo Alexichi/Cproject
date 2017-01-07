@@ -43,13 +43,30 @@ void divEucl( int* p, int* q, int* res){
 //void factorisation(int* p, int* res){}
 
 void ecriture (int* p){
-	for(int i = DEGREMAX-2; i>1; i--){
-		if(p[i] != 0){
-			printf("%dx^%d + ", p[i], i);
+	for(int i = DEGREMAX-1; i>=0; i--)
+	{
+		if( (p[i] != 0) && (i > 1) )
+		{
+			printf("%dx^%d", p[i], i);
+			if( (p[i-1] != 0) && (p[i-1] > 0) )
+			{
+				printf("+");
+			}
+		}
+		else if ( (p[i] != 0) && (i == 1) )
+		{
+			printf("%dx",p[i]);
+			if( (p[i-1] != 0) && (p[i-1] > 0) )
+			{
+				printf("+");
+			}
+		}
+		else if ( (p[i] != 0) && (i == 0) )
+		{
+			printf("%d",p[i]);
 		}
 	}
-	printf("%dx + ",p[1]);
-	printf("%d ",p[0]);
+	printf("\n");
 }
 
 void horner(){}

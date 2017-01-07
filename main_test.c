@@ -22,6 +22,7 @@
 
 #include "operations.h"
 
+
 void init(int * tab, int size)
 {
 	for(int i = 0; i < size; i++)
@@ -36,7 +37,7 @@ void triPoly(char * tabIn, int * tabOut)
 	int power = 0;
 	int j = 1;
 	int k = 1; //incrément pour savoir la présence d'un *
-	
+	int l = 1;
 	for(int i = 0; i < ENTREEMAX; i++)
 	{
 		j = 1;
@@ -68,6 +69,7 @@ void triPoly(char * tabIn, int * tabOut)
 				{
 					power = 1;
 				}
+				tabOut[power] = coef;
 			}
 			else 			// on a rien devant le x
 			{
@@ -84,36 +86,57 @@ void triPoly(char * tabIn, int * tabOut)
 				{
 					power = 1;
 				}
+				tabOut[power] = coef;
 			}
 		}
-		tabOut[power] = coef;
+		else if ( (isdigit(tabIn[i])) && (!isdigit(tabIn[i-1])) ) // chercher une constante
+		{
+			coef = 0;
+			j = 1;
+			l = 1;
+			while( isdigit(tabIn[i+j]) ) // lire d'un decalage de j tant qu'on a des digit
+			{
+				j++;	
+			}
+			if( (tabIn[i+j] != 'x') && (tabIn[i-1] != '^')) // si le caractere apres le nombre n'est pas x et pas de ^ devant le nombre, alors on a une constante
+			{
+				power = 0;
+				while( isdigit(tabIn[i+j-l]) ) // lire d'un decalage de l tant qu'on a des digit
+				{
+					coef = coef + (tabIn[i+j-l]-'0')*pow(10.0, l-1); // exemple pour comprendre : 112 = 10^3 + 10^2 + 2*10^1
+					l++;	
+				}
+				if( tabIn[i-1] == '-' )
+				{
+					coef = -coef;
+				}
+				tabOut[power] = coef;
+			}
+		}
 	}
 }
 
 
 int main(void)
 {
-	int p[] = {3,2,7,3,8,0,0,0,0,0};
-	int q[] = {4,3,0,0,0,0,0,0,0,0};
-	int res[10] ;
-	init(res, 10);
-	produit(p,q, res);
-	ecriture(res);
-	/*char saisie[ENTREEMAX] = " ";
-	polynome p;
-	init(p, DEGREMAX);
+	//int p[] = {3,2,7,3,8,0,0,0,0,0};  // 3 + 2x + 7x^2 + 3x^3 + 8x^4
+	//int q[] = {4,3,0,0,0,0,0,0,0,0};  // 4 + 3x
+	//int res[10] ;
+	//init(res, 10);
+	//produit(p,q, res);
+	//somme(p, q, res);
+	//ecriture(res);
 	int c = 0;
 	int i = 0;
+	char saisie[ENTREEMAX] = " ";
+	polynome p;
+	init(p, DEGREMAX);
 	while( (c = getchar()) != EOF)		// on recupere le contenu
 	{
-		printf("%c", c);
 		saisie[i] = c;
 		i++;
 	}
 	triPoly(saisie, p);
-	for(int i = 0; i < DEGREMAX; i++)
-	{
-		printf("Ordre : %d	Coeff : %d\n", i, p[i]);
-	}*/
-	return EXIT_SUCCESS;
+	ecriture(p);
+	return 0;
 }
