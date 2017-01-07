@@ -27,6 +27,11 @@ void derivation( int* p, int* res){
 	}
 }
 
+/*
+ * Pour pouvoir réaliser la fonction integration(), il faut 
+ * manipuler des tableaux de doubles puisque les coefficients
+ * seront des fractions. ex : primitive de 4x^5 = (4/6)x^6
+ */
 void integration( int* p, int* res){
 	
 }
