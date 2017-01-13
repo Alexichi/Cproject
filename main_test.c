@@ -11,8 +11,8 @@
 
 
 /* Lignes de commandes de contruction avec plusieurs fichiers c
- * gcc -Wall -c *.c -lSDL  -lsndfile -lncurses -std=c99 -lm
- * gcc -Wall -std=c99 -o main_test *.o  `sdl2-config --cflags --libs` -lsndfile -lncurses -lm
+ * gcc -Wall -c *.c -lsndfile -lncurses -std=gnu99 -lm
+ * gcc -Wall -std=gnu99 -o main_test *.o   -lncurses -lm
  */
 
 
@@ -24,38 +24,47 @@
 #include "operations.h"
 
 
-void init(int * tab, int size)
+void initDouble(int tab[][DEGREMAX], int sizex)
+{
+	for(int i = 0; i < sizex; i++)
+	{
+		for(int j = 0; j < DEGREMAX; j++)
+		{
+			tab[i][j] = 0;
+		}
+	}
+}
+
+void initChar(char tab[], int size)
 {
 	for(int i = 0; i < size; i++)
 	{
-		tab[i] = 0;
+		tab[i] = ' ';
 	}
 }
 
 void triPoly(char * tabIn, int * tabOut)
 {
-	int coefTmp = 0; //coefficient temporaire pour stocker le coefficient du terme courant
-	int coef = 0; // coeffcient final issue de la somme des coeffcients de même puissance de x
+	int coef = 0; // coeffcient devant x
 	int power = 0;
 	int j = 1;
 	int l = 1;
-	int constante = 0; // constante finale issue de la somme de toutes les valeurs constantes
 	for(int i = 0; i < ENTREEMAX; i++)
 	{
 		j = 1;
-		if( tabIn[i] == 'x')
+		if( tabIn[i] == 'x') // on repere un x
 		{
-			coefTmp = 0;
+			coef = 0;
 			if( (i != 0) && isdigit(tabIn[i-1]) )
 			{
 				while( isdigit(tabIn[i-j]) ) // lire d'un decalage de j tant qu'on a des digit
 				{
-					coefTmp = coefTmp + (tabIn[i-j]-'0')*pow(10.0, j-1); // exemple pour comprendre : 112 = 10^2 + 10^1 + 2*10^0
+					coef = coef + (tabIn[i-j]-'0')*pow(10.0, j-1); // exemple pour comprendre : 112 = 10^2 + 10^1 + 2*10^0
 					j++;
 				}
 				if( tabIn[i-j] == '-' )
 				{
-					coefTmp = -coefTmp;
+					coef = -coef;
 				}
 				if( tabIn[i+1] == '^' )
 				{
@@ -65,16 +74,15 @@ void triPoly(char * tabIn, int * tabOut)
 				{
 					power = 1;
 				}
-				coef = tabOut[power];
-				coef += coefTmp;
-				tabOut[power] = coef;
+				
+				tabOut[power] = tabOut[power] + coef;
 			}
 			else 			// on a rien devant le x
 			{
-				coefTmp = 1;
+				coef = 1;
 				if( tabIn[i-1] == '-' )
 				{
-					coefTmp = -coefTmp;
+					coef = -coef;
 				}
 				if( tabIn[i+1] == '^' )
 				{
@@ -84,14 +92,12 @@ void triPoly(char * tabIn, int * tabOut)
 				{
 					power = 1;
 				}
-				coef = tabOut[power];
-				coef += coefTmp;
-				tabOut[power] = coef;
+				tabOut[power] = tabOut[power] + coef;
 			}
 		}
 		else if ( (isdigit(tabIn[i])) && (!isdigit(tabIn[i-1])) ) // chercher une constante
 		{
-			coefTmp = 0;
+			coef = 0;
 			j = 1;
 			l = 1;
 			while( isdigit(tabIn[i+j]) ) // lire d'un decalage de j tant qu'on a des digit
@@ -103,46 +109,76 @@ void triPoly(char * tabIn, int * tabOut)
 				power = 0;
 				while( isdigit(tabIn[i+j-l]) ) // lire d'un decalage de l tant qu'on a des digit
 				{
-					coefTmp = coefTmp + (tabIn[i+j-l]-'0')*pow(10.0, l-1); // exemple pour comprendre : 112 = 10^2 + 10^1 + 2*10^0
+					coef = coef + (tabIn[i+j-l]-'0')*pow(10.0, l-1); // exemple pour comprendre : 112 = 10^2 + 10^1 + 2*10^0
 					l++;	
 				}
 				if( tabIn[i-1] == '-' )
 				{
-					coefTmp = -coefTmp;
+					coef = -coef;
 				}
-				/* constante est la variable finale. De ce fait on garde le résultat d'avant ,qu'on somme au coef actuel.
-				 * ( ex :x + 7 + 12 = x + 19) 
-				 */
-				constante += coefTmp;  
-				tabOut[power] = constante;
+				tabOut[power] = tabOut[power] + coef;
 			}
 		}
 	}
 }
 
+/* commandes : P + saisie pour declarer un poly 
+ * 				D pour afficher les poly */
 
 int main(void)
 {
-	//int p[] = {3,2,7,3,8,0,0,0,0,0};  // 3 + 2x + 7x^2 + 3x^3 + 8x^4
-	//int q[] = {4,3,0,0,0,0,0,0,0,0};  // 4 + 3x
-	//int res[10] ;
-	//init(res, 10);
-	//produit(p,q, res);
-	//somme(p, q, res);
-	//ecriture(res);
+	int res[DEGREMAX] ;
+	int exit = 0;
 	int c = 0;
 	int i = 0;
 	char saisie[ENTREEMAX] = " ";
+	char commande = ' ';
+	int nbPolynome = 0;
 	polynome p;
-	init(p, DEGREMAX);
-	while( (c = getchar()) != EOF)		// on recupere le contenu
+	
+	initDouble(p, 10);
+	
+	while( exit == 0 )
 	{
-		if(c != ' ' && c != '*'){
-			saisie[i] = c;
-			i++;
+		i = 0;
+		initChar(saisie, ENTREEMAX);
+		while( (c = getchar()) != '\n')		// on recupere le contenu
+		{
+			if(c != ' ' && c != '*')
+			{
+				if( i < 1 ) 
+				{
+					commande = c;
+				}
+				else
+				{
+					saisie[i-1] = c;
+				}
+				i++;
+			}
+		}
+		if( commande == 'P' )
+		{
+			triPoly(saisie, p[nbPolynome]);
+			ecriture(p[nbPolynome]);
+			nbPolynome++;
+		}
+		if( commande == 'E' )
+		{
+			exit = 1;
+		}
+		if( commande == 'D' )
+		{
+			for(int i = 0; i <= nbPolynome; i++)
+			{
+				ecriture(p[i]);
+			}
+		}
+		if( commande == 'A' )
+		{
+			somme(p[0], p[1], res);
+			ecriture(res);
 		}
 	}
-	triPoly(saisie, p);
-	ecriture(p);
 	return 0;
 }
