@@ -127,6 +127,17 @@ void triPoly(char * tabIn, int * tabOut)
 
 int main(void)
 {
+	/*int N[] = {-3,2,-4,1,0,0,0,0,0,0};  
+	int D[] = {2,1,0,0,0,0,0,0,0,0}; 
+	int reste[10] ;
+	int Q[10];
+	init(reste, 10);
+	init(Q, 10);
+	divEucl(N,D,Q,reste);
+	printf("N :");ecriture(N);
+	printf("D :");ecriture(D);
+	printf("Q :");ecriture(Q);
+	printf("reste :");ecriture(reste);*/
 	int res[DEGREMAX] ;
 	int exit = 0;
 	int c = 0;
