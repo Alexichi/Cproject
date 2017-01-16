@@ -236,15 +236,21 @@ int main(void)
 				{
 					commande = c;
 				}
-				else
-				{
-					saisie[i-1] = c;
-				}
 				i++;
 			}
 		}
 		if( commande == 'P' )
 		{
+			i = 0;
+			printf("Saisissez votre polynome\n");
+			while( (c = getchar()) != '\n' )
+			{
+				if( (c != ' ') && (i<ENTREEMAX) )
+				{
+					saisie[i] = c;
+					i++;
+				}
+			}
 			if(verifPoly(saisie) == 0){
 				printf("mauvaise syntaxe pour le polynome \n");
 			}
