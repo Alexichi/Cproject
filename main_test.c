@@ -23,7 +23,13 @@
 
 #include "operations.h"
 
-
+/*
+ * Fonction permettant d'initialiser un tableau d'entiers à double entrées
+ * On utilise cette fonction principalement pour initialiser le tableau qui
+ * va contenir les polynômes.
+ * Paramètres : tab, le tableau d'entiers à double entrées à initialiser
+ * 				sizex, qui correspond au nombre de polynômes que l'on peut stocker
+ */
 void initDouble(int tab[][DEGREMAX], int sizex)
 {
 	for(int i = 0; i < sizex; i++)
@@ -35,6 +41,13 @@ void initDouble(int tab[][DEGREMAX], int sizex)
 	}
 }
 
+/*
+ * Fonction permettant d'initialiser un tableau de caractères
+ * On utilise cette fonction principalement pour initialiser le tableau qui
+ * contient tous les caractères taper sur l'entrée standard (terminal)
+ * Paramètres : tab, le tableau de caractères à initialiser
+ * 				size, taille du tableau 
+ */
 void initChar(char tab[], int size)
 {
 	for(int i = 0; i < size; i++)
@@ -43,6 +56,49 @@ void initChar(char tab[], int size)
 	}
 }
 
+/*
+ * Fonction permettant de vérifier ce que l'utilisateur a écrit lorsqu'il veut entrer un polynome
+ * Paramètre : tab, le tableau contenant tous les caractères taper sur l'entrée standard (terminal)
+ */
+int verifPoly(char * tab){
+	if(tab[0] == '^'){
+			printf("lolp\n");
+			return 0;
+	}
+	for(int i = 0; i < ENTREEMAX-1; i++){
+		if(!(isdigit(tab[i])) && tab[i]!='+' && tab[i]!='-' && tab[i]!='x' && tab[i]!='^' && tab[i]!=' '){
+			printf("%c\n", tab[i]);
+			return 0;
+		}
+		else if((tab[i] == '+' && tab[i+1] == '+') || (tab[i] == '-' && tab[i+1] == '-') || (tab[i] == 'x' && tab[i+1] == 'x') ||
+				(tab[i] == '^' && tab[i+1] == '^')){
+				printf("lol1\n");
+				return 0;
+		}
+		else if(tab[i] == '^' && !(isdigit(tab[i+1]))){
+			printf("lol2\n");
+			return 0;
+		}
+		else if(tab[i+1] == '^' && tab[i] != 'x'){
+			printf("lol3\n");
+			return 0;
+		}
+		else if(tab[i] == 'x' && (tab[i+1] != '+' && tab[i+1] != '^') && tab[i+1] != ' '){
+			printf("lol4\n");
+			return 0;
+		}
+	}
+	return 1;
+}
+
+/*
+ * Fonction permettant de rentrer dans un tableau le polynôme entré sur l'entrée standard 
+ * et qui a été vérifié. L'indice correspond à la puissance du monôme courant et la valeur 
+ * à cet indice est le coefficient se trouvent devant la variable x^n
+ * Ex : pour 2x^4 , la valeur 2 sera stocké à l'indice 4 (sachant que l'indice commence à 0)
+ * Paramètres : tabIn, le tableau de caractères à transformer
+ * 				tabOut, le tableau d'entiers résultant du tri
+ */
 void triPoly(char * tabIn, int * tabOut)
 {
 	int coef = 0; // coeffcient devant x
@@ -122,7 +178,11 @@ void triPoly(char * tabIn, int * tabOut)
 	}
 }
 
-void afficherCommande()
+/*
+ * Fonction permettant d'afficher les différentes commandes possibles
+ * selon l'action que l'on désire réaliser
+ */
+void afficherCommande(void)
 {
 	printf("P : declare le polynome qui suit P\n");
 	printf("A : Commande d'addition\n");
@@ -137,13 +197,11 @@ int main(void)
 {
 	/*int N[] = {-3,2,-4,1,0,0,0,0,0,0};  
 	int D[] = {2,1,0,0,0,0,0,0,0,0}; 
-	int reste[10] ;
-	int Q[10];
-	init(reste, 10);
-	init(Q, 10);
-	divEucl(N,D,Q,reste);
-	printf("N :");ecriture(N);
-	printf("D :");ecriture(D);
+	int res[10] ;
+	init(res, 10);
+	produit(N,D,res);
+	printf("résultat de la mutiplication : \n");ecriture(res);*/
+	/*printf("D :");ecriture(D);
 	printf("Q :");ecriture(Q);
 	printf("reste :");ecriture(reste);*/
 	printf("Entrer un polynôme pour commencer en le précédant de la lettre P \n (n'utiliser que la variable x) \n");
@@ -180,8 +238,13 @@ int main(void)
 		}
 		if( commande == 'P' )
 		{
-			triPoly(saisie, p[nbPolynome]);;
-			nbPolynome++;
+			if(verifPoly(saisie) == 0){
+				printf("mauvaise syntaxe pour le polynome \n");
+			}
+			else{
+				triPoly(saisie, p[nbPolynome]);
+				nbPolynome++;
+			}
 		}
 		if( commande == 'E' )
 		{
@@ -197,7 +260,7 @@ int main(void)
 		if( commande == 'A' )
 		{
 			i = 0;
-			printf("Saisir les 2 numero des polynomes a additionner, les numeros commencent a 0 \n");
+			printf("Saisir le numéro des deux polynomes a additionner, les numeros commencent a 0 \n");
 			while( (c = getchar()) != '\n' )
 			{
 				if( (c != ' ') )
