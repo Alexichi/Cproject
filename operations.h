@@ -5,14 +5,15 @@
 #include <math.h>
 
 /* Valeur correspondant à la taille maximale d'un tableau correspondant à un polynôme */
-#define DEGREMAX 10			
-#define NBMAXPOLY 10
+#define DEGREMAX 10			/* en realite : DEGREMAX - 1, si DEGREMAX = 5, le degree reel max est 4, on commence a puissance 0 */
 
 /* Définition d'un tableau de polynômes étant un tableau à double entrée pouvant contenir 10 polynômes */
-typedef int polynome[NBMAXPOLY][DEGREMAX];
+typedef int polynome[10][DEGREMAX];
 
 /* Nombre de caractères maximal que l'on peut taper sur l'entrée standard lorsque l'on veut entrer un polynôme*/
 #define ENTREEMAX 200
+
+#define NBMAXPOLY 10
 
 /* Déclaration des prototypes des fonctions écrites dans operations.c 
  * Pour plus d'informations aller voir le fichier operations.c
@@ -38,6 +39,8 @@ void affectation( int * , int *);
 void decalage( int * , int *, int);
 
 void divEucl( int* , int* , int* , int*);
+
+void factorisation(int* ,int* , int );
 
 void ecriture (int* p);
 
