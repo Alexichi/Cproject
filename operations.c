@@ -192,8 +192,8 @@ void ecriture (int* p){
 			if(p[i] == 1) printf("x^%d",i);
 			else printf("%dx^%d", p[i], i);
 			
-			while(p[i-zeroCounter]==0) zeroCounter++;
-			if(p[i-zeroCounter] >= 0)
+			while(p[i-zeroCounter]==0 && (zeroCounter <= i)) zeroCounter++;
+			if(p[i-zeroCounter] > 0)
 			{
 				printf("+");
 			}
@@ -203,8 +203,8 @@ void ecriture (int* p){
 		{
 			if(p[i] == 1) printf("x");
 			else printf("%dx",p[i]);
-			while(p[i-zeroCounter]==0) zeroCounter++;
-			if(p[i-zeroCounter] >= 0)
+			while(p[i-zeroCounter]==0 && (zeroCounter <= i)) zeroCounter++;
+			if(p[i-zeroCounter] > 0 )
 			{
 				printf("+");
 			}

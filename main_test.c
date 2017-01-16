@@ -58,7 +58,7 @@ void initChar(char tab[], int size)
 
 /*
  * Fonction permettant de vérifier ce que l'utilisateur a écrit lorsqu'il veut entrer un polynome
- * Paramètre : tab, le tableau contenant tous les caractères taper sur l'entrée standard (terminal)
+ * Paramètre : tab, le tableau contenant tous les caractères tapés sur l'entrée standard (terminal)
  */
 int verifPoly(char * tab){
 	if(tab[0] == '^'){

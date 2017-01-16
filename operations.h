@@ -13,8 +13,8 @@ typedef int polynome[10][DEGREMAX];
 /* Nombre de caractères maximal que l'on peut taper sur l'entrée standard lorsque l'on veut entrer un polynôme*/
 #define ENTREEMAX 200
 
-/* Déclaration des prototypes des fonctions écrites dans operation.c 
- * Pour plus d'informations aller voir le fichier operation.c
+/* Déclaration des prototypes des fonctions écrites dans operations.c 
+ * Pour plus d'informations aller voir le fichier operations.c
  */
 void init(int *, int );
 
