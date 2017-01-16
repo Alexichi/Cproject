@@ -122,9 +122,10 @@ void triPoly(char * tabIn, int * tabOut)
 	}
 }
 
-/* commandes : P + saisie pour declarer un poly 
- * 				D pour afficher les poly */
 
+/*
+ * Fonction principale permettant d'intéragir directement avec l'utilisateur
+ */
 int main(void)
 {
 	/*int N[] = {-3,2,-4,1,0,0,0,0,0,0};  
@@ -138,6 +139,7 @@ int main(void)
 	printf("D :");ecriture(D);
 	printf("Q :");ecriture(Q);
 	printf("reste :");ecriture(reste);*/
+	printf("Entrer un polynôme pour commencer en le précédant de la lettre P \n (n'utiliser que la variable x) \n");
 	int res[DEGREMAX] ;
 	int exit = 0;
 	int c = 0;
