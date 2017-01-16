@@ -200,8 +200,8 @@ int main(void)
 	int R[DEGREMAX];
 	int exit = 0;
 	int c = 0;
+	char d = 0;
 	int i = 0;
-	int nbPolynome = 0;
 	char saisie[ENTREEMAX] = " ";
 	char parametre[ENTREEMAX] = " ";
 	char commande = ' ';
@@ -230,6 +230,16 @@ int main(void)
 		switch(commande){
 			case 'P':
 				i = 0;
+				char nom = 'a';
+				printf("nom du polynôme\n");
+				while( (d = getchar()) != '\n' )
+				{
+					nom = d;
+				}
+				if((nom-'A')< 0 || (nom-'A')>26){
+					printf("Besoin d'un nom de polynôme en majuscule\n");
+					break;
+				}
 				printf("Saisissez votre polynome\n");
 				while( (c = getchar()) != '\n' )
 				{
@@ -243,8 +253,7 @@ int main(void)
 					printf("mauvaise syntaxe pour le polynome \n");
 				}
 				else{
-					triPoly(saisie, p[nbPolynome]);
-					nbPolynome++;
+					triPoly(saisie, p[nom-'A']);
 				}
 				break;
 			
@@ -253,15 +262,18 @@ int main(void)
 				break;
 			
 			case 'D':
-				for(int i = 0; i < nbPolynome; i++)
+				for(int i = 0; i < NBMAXPOLY; i++)
 				{
-					printf("Polynome numero %d ", i);ecriture(p[i]);
+					if(degre(p[i])!= (-1))
+					{
+						printf("Polynome %c ", i+'A');ecriture(p[i]);
+					}
 				}
 				break;
 			
 			case 'A':
 				i = 0;
-				printf("Saisir le numéro des deux polynomes a additionner, les numeros commencent a 0 \n");
+				printf("Saisir le nom des deux polynomes a additionner \n");
 				while( (c = getchar()) != '\n' )
 				{
 					if( (c != ' ') )
@@ -270,13 +282,13 @@ int main(void)
 						i++;
 					}
 				}
-				somme(p[parametre[0] - '0'], p[parametre[1] - '0'], res);
+				somme(p[parametre[0] - 'A'], p[parametre[1] - 'A'], res);
 				ecriture(res);
 				break;
 			
 			case 'M':
 				i = 0;
-				printf("Saisir le numéro des deux polynomes a multiplier, les numeros commencent a 0 \n");
+				printf("Saisir le nom des deux polynomes a multiplier\n");
 				while( (c = getchar()) != '\n' )
 				{
 					if( (c != ' ') )
@@ -285,13 +297,13 @@ int main(void)
 						i++;
 					}
 				}
-				produit(p[parametre[0] - '0'], p[parametre[1] - '0'], res);
+				produit(p[parametre[0] - 'A'], p[parametre[1] - 'A'], res);
 				ecriture(res);
 				break;
 			
 			case 'Q':
 				i = 0;
-				printf("Saisir le numéro des deux polynomes, les numeros commencent a 0 \n");
+				printf("Saisir le nom des deux polynomes \n");
 				printf("Le deuxieme polynome divise \n");
 				while( (c = getchar()) != '\n' )
 				{
@@ -301,7 +313,7 @@ int main(void)
 						i++;
 					}
 				}
-				divEucl(p[parametre[0] - '0'], p[parametre[1] - '0'], Q, R);
+				divEucl(p[parametre[0] - 'A'], p[parametre[1] - 'A'], Q, R);
 				init(res, DEGREMAX);
 				printf("Quotient : ");ecriture(Q);
 				printf("Reste : ");ecriture(R);
