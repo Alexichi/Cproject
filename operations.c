@@ -59,9 +59,14 @@ void difference(int* p, int* q, int* res){
  * 				res, résultat de p*q
  */
 void produit( int* p, int* q, int* res){
-	for(int i = 0; i<DEGREMAX; i++){
-		for(int j = 0; j<DEGREMAX; j++){
-			res[i+j] += p[i] * q[j];
+	for(int i = 0; i<DEGREMAX; i++)
+	{
+		for(int j = 0; j<DEGREMAX; j++)
+		{
+			if( (i+j) < DEGREMAX )
+			{
+				res[i+j] = res[i+j] + (p[i]*q[j]);
+			}
 		}
 	}
 }
@@ -165,27 +170,7 @@ void divEucl( int* N, int* D, int* Q, int * R){
 	affectation(Ntmp, R);
 }
 
-/*
- * Fonction permettant de factoriser un polynôme par (x-a) avec a donné si cela est possible
- * Pour cela nous utilisons la fonction divEucl qui avait été écrite au préalable
- * Paramètres: 	p, le polynôme à factoriser
- * 				res, le quotient résultant de la factorisation avec (x-a)
- * 				a, la racine entière qui permet la factorisation par (x-a)
- */
-void factorisation(int* p,int* res, int a){
-	int facteur[DEGREMAX] = {-a,1,0,0,0,0,0,0,0,0};
-	int R[DEGREMAX];
-	/* On initialise le polynôme R afin de s'assurer qu'il soit composé seulement de zéros*/
-	init(R, DEGREMAX);
-	divEucl(p, facteur, res, R);
-	if(degre(R) != (-1)){
-		printf("la factorisation ne peut être faite car il resterait un reste");
-		init(res, DEGREMAX);
-		return;
-	}
-	printf("le résultat de la factorisation est (x-%d)(", a);
-	ecriture(res);
-}
+//void factorisation(int* p, int* res){}
 
 
 /*

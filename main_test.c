@@ -186,6 +186,8 @@ void afficherCommande(void)
 {
 	printf("P : declare le polynome qui suit P\n");
 	printf("A : Commande d'addition\n");
+	printf("M : Commande de multiplication\n");
+	printf("Q : Commande de division\n");
 	printf("E : Commande de sortie de programme \n");
 	printf("D : Affiche les polynomes saisis\n");
 }
@@ -195,26 +197,32 @@ void afficherCommande(void)
  */
 int main(void)
 {
-	/*int N[] = {2,-3,1,0,0,0,0,0,0,0};  
+	/*int N[] = {-3,2,-4,1,0,0,0,0,0,0};  
 	int D[] = {2,1,0,0,0,0,0,0,0,0}; 
 	int res[10] ;
 	init(res, 10);
-	factorisation(N,res,2);*/
-	/*printf("D :");ecriture(D);
-	printf("Q :");ecriture(Q);
-	printf("reste :");ecriture(reste);*/
+	produit(N,D,res);
+	printf("résultat de la mutiplication : \n");ecriture(res);
+	//printf("D :");ecriture(D);
+	//printf("Q :");ecriture(Q);
+	//printf("reste :");ecriture(reste);*/
 	printf("Entrer un polynôme pour commencer en le précédant de la lettre P \n (n'utiliser que la variable x) \n");
 	int res[DEGREMAX] ;
+	int Q[DEGREMAX];
+	int R[DEGREMAX];
 	int exit = 0;
 	int c = 0;
 	int i = 0;
-	char saisie[ENTREEMAX] = " ";
-	char parametre[10] = " ";
-	char commande = ' ';
 	int nbPolynome = 0;
+	char saisie[ENTREEMAX] = " ";
+	char parametre[ENTREEMAX] = " ";
+	char commande = ' ';
 	polynome p;
 	
-	initDouble(p, 10);
+	initDouble(p, NBMAXPOLY);
+	init(res, DEGREMAX);
+	init(Q, DEGREMAX);
+	init(R, DEGREMAX);
 	afficherCommande();
 	while( exit == 0 )
 	{
@@ -224,7 +232,7 @@ int main(void)
 		{
 			if(c != ' ' && c != '*')
 			{
-				if( i < 1 ) 
+				if( i == 0 ) 
 				{
 					commande = c;
 				}
@@ -253,7 +261,7 @@ int main(void)
 		{
 			for(int i = 0; i < nbPolynome; i++)
 			{
-				ecriture(p[i]);
+				printf("Polynome numero %d ", i);ecriture(p[i]);
 			}
 		}
 		if( commande == 'A' )
@@ -263,11 +271,42 @@ int main(void)
 			while( (c = getchar()) != '\n' )
 			{
 				if( (c != ' ') )
-				parametre[i] = c;
-				i++;
+				{
+					parametre[i] = c;
+					i++;
+				}
 			}
 			somme(p[parametre[0] - '0'], p[parametre[1] - '0'], res);
 			ecriture(res);
+		}
+		if( commande == 'M' )
+		{
+			i = 0;
+			printf("Saisir le numéro des deux polynomes a multiplier, les numeros commencent a 0 \n");
+			while( (c = getchar()) != '\n' )
+			{
+				if( (c != ' ') )
+				parametre[i] = c;
+				i++;
+			}
+			produit(p[parametre[0] - '0'], p[parametre[1] - '0'], res);
+			ecriture(res);
+		}
+		if( commande == 'Q' )
+		{
+			i = 0;
+			printf("Saisir le numéro des deux polynomes, les numeros commencent a 0 \n");
+			printf("Le deuxieme polynome divise \n");
+			while( (c = getchar()) != '\n' )
+			{
+				if( (c != ' ') )
+				parametre[i] = c;
+				i++;
+			}
+			divEucl(p[parametre[0] - '0'], p[parametre[1] - '0'], Q, R);
+			init(res, DEGREMAX);
+			printf("Quotient : ");ecriture(Q);
+			printf("Reste : ");ecriture(R);
 		}
 	}
 	return 0;
