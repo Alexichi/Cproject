@@ -195,12 +195,11 @@ void afficherCommande(void)
  */
 int main(void)
 {
-	/*int N[] = {-3,2,-4,1,0,0,0,0,0,0};  
+	/*int N[] = {2,-3,1,0,0,0,0,0,0,0};  
 	int D[] = {2,1,0,0,0,0,0,0,0,0}; 
 	int res[10] ;
 	init(res, 10);
-	produit(N,D,res);
-	printf("résultat de la mutiplication : \n");ecriture(res);*/
+	factorisation(N,res,2);*/
 	/*printf("D :");ecriture(D);
 	printf("Q :");ecriture(Q);
 	printf("reste :");ecriture(reste);*/

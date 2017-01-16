@@ -38,6 +38,8 @@ void decalage( int * , int *, int);
 
 void divEucl( int* , int* , int* , int*);
 
+void factorisation(int* ,int* , int );
+
 void ecriture (int* p);
 
 void horner();
