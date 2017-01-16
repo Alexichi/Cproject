@@ -122,6 +122,13 @@ void triPoly(char * tabIn, int * tabOut)
 	}
 }
 
+void afficherCommande()
+{
+	printf("P : declare le polynome qui suit P\n");
+	printf("A : Commande d'addition\n");
+	printf("E : Commande de sortie de programme \n");
+	printf("D : Affiche les polynomes saisis\n");
+}
 
 /*
  * Fonction principale permettant d'intéragir directement avec l'utilisateur
@@ -145,12 +152,13 @@ int main(void)
 	int c = 0;
 	int i = 0;
 	char saisie[ENTREEMAX] = " ";
+	char parametre[10] = " ";
 	char commande = ' ';
 	int nbPolynome = 0;
 	polynome p;
 	
 	initDouble(p, 10);
-	
+	afficherCommande();
 	while( exit == 0 )
 	{
 		i = 0;
@@ -172,8 +180,7 @@ int main(void)
 		}
 		if( commande == 'P' )
 		{
-			triPoly(saisie, p[nbPolynome]);
-			ecriture(p[nbPolynome]);
+			triPoly(saisie, p[nbPolynome]);;
 			nbPolynome++;
 		}
 		if( commande == 'E' )
@@ -182,14 +189,22 @@ int main(void)
 		}
 		if( commande == 'D' )
 		{
-			for(int i = 0; i <= nbPolynome; i++)
+			for(int i = 0; i < nbPolynome; i++)
 			{
 				ecriture(p[i]);
 			}
 		}
 		if( commande == 'A' )
 		{
-			somme(p[0], p[1], res);
+			i = 0;
+			printf("Saisir les 2 numero des polynomes a additionner, les numeros commencent a 0 \n");
+			while( (c = getchar()) != '\n' )
+			{
+				if( (c != ' ') )
+				parametre[i] = c;
+				i++;
+			}
+			somme(p[parametre[0] - '0'], p[parametre[1] - '0'], res);
 			ecriture(res);
 		}
 	}
