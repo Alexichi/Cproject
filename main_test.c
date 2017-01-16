@@ -1,12 +1,6 @@
 /*
  * main_test.c
  *
- *  
- * polynomes de test :
- * -2x+x^2+3x^3
- * -5*x+5*x^7-6*x^3
- * 3x^4+5x^2+8x+9
- * -5*x + 5 *x^7- 6*x^3 + 7x + 5 + 12 fonctionne
  */
 
 
@@ -62,7 +56,6 @@ void initChar(char tab[], int size)
  */
 int verifPoly(char * tab){
 	if(tab[0] == '^'){
-			printf("lolp\n");
 			return 0;
 	}
 	for(int i = 0; i < ENTREEMAX-1; i++){
@@ -72,19 +65,15 @@ int verifPoly(char * tab){
 		}
 		else if((tab[i] == '+' && tab[i+1] == '+') || (tab[i] == '-' && tab[i+1] == '-') || (tab[i] == 'x' && tab[i+1] == 'x') ||
 				(tab[i] == '^' && tab[i+1] == '^')){
-				printf("lol1\n");
 				return 0;
 		}
 		else if(tab[i] == '^' && !(isdigit(tab[i+1]))){
-			printf("lol2\n");
 			return 0;
 		}
 		else if(tab[i+1] == '^' && tab[i] != 'x'){
-			printf("lol3\n");
 			return 0;
 		}
 		else if(tab[i] == 'x' && (tab[i+1] != '+' && tab[i+1] != '^') && tab[i+1] != ' '){
-			printf("lol4\n");
 			return 0;
 		}
 	}
@@ -244,7 +233,7 @@ int main(void)
 			printf("Saisissez votre polynome\n");
 			while( (c = getchar()) != '\n' )
 			{
-				if( (c != ' ') && (i<ENTREEMAX) )
+				if( (i<ENTREEMAX) )
 				{
 					saisie[i] = c;
 					i++;
