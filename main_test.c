@@ -94,37 +94,52 @@ void triPoly(char * tabIn, int * tabOut)
 	int power = 0;
 	int j = 1;
 	int l = 1;
-	for(int i = 0; i < ENTREEMAX; i++)
+	/* le but est de parcourir la chaine de charactere qui est dans tabIn
+	 * */
+	for(int i = 0; i < ENTREEMAX; i++) 
 	{
 		j = 1;
-		if( tabIn[i] == 'x') // on repere un x
+		if( tabIn[i] == 'x') /* On commence par cherche un x */
 		{
 			coef = 0;
-			if( (i != 0) && isdigit(tabIn[i-1]) )
+			/* cette condition permet de savoir si il y a quelque chose devant x
+			 * plus particulierement un nombre
+			 * */
+			if( (i != 0) && isdigit(tabIn[i-1]) ) 
 			{
+				/* cette boucle permet de recuperer les coeff a plusieurs chiffres par exemple 100 */
 				while( isdigit(tabIn[i-j]) ) // lire d'un decalage de j tant qu'on a des digit
 				{
 					coef = coef + (tabIn[i-j]-'0')*pow(10.0, j-1); // exemple pour comprendre : 112 = 10^2 + 10^1 + 2*10^0
 					j++;
 				}
-				if( tabIn[i-j] == '-' )
+				/* Si on trouve un - devant le coeff
+				 * on le passe en negatif
+				 * */
+				if( tabIn[i-j] == '-' ) 
 				{
 					coef = -coef;
 				}
+				/* on recherche la presence d'un ^
+				 * pour ensuite recuperer la puissance 
+				 * */
 				if( tabIn[i+1] == '^' )
 				{
-					power = tabIn[i+2] - '0';
+					power = tabIn[i+2] - '0'; /* l'operation tabIn[i+2] - '0' permet de faire une conversion char -> int coherente */
 				}
-				else
+				else /* pas de ^ donc la puissance est forcement 1 */
 				{
 					power = 1;
 				}
-				
+				/* maintenant que notre coeff est defini
+				 * ainsi que la puissance
+				 * on peut stocker le coeff a l'indice de la puissance
+				 * */
 				tabOut[power] = tabOut[power] + coef;
 			}
-			else 			// on a rien devant le x
+			else 		/* on a rien devant le x */
 			{
-				coef = 1;
+				coef = 1; /* donc le coeff est forcement 1 */
 				if( tabIn[i-1] == '-' )
 				{
 					coef = -coef;
@@ -140,7 +155,7 @@ void triPoly(char * tabIn, int * tabOut)
 				tabOut[power] = tabOut[power] + coef;
 			}
 		}
-		else if ( (isdigit(tabIn[i])) && (!isdigit(tabIn[i-1])) ) // chercher une constante
+		else if ( (isdigit(tabIn[i])) && (!isdigit(tabIn[i-1])) ) /* si ce n'est pas un x on peut tomber sur le debut d'une constante */
 		{
 			coef = 0;
 			j = 1;
@@ -149,7 +164,8 @@ void triPoly(char * tabIn, int * tabOut)
 			{
 				j++;	
 			}
-			if( (tabIn[i+j] != 'x') && (tabIn[i-1] != '^')) // si le caractere apres le nombre n'est pas x et pas de ^ devant le nombre, alors on a une constante
+			/* si le caractere apres le nombre n'est pas x et pas de ^ devant le nombre, alors on a une constante */
+			if( (tabIn[i+j] != 'x') && (tabIn[i-1] != '^')) 
 			{
 				power = 0;
 				while( isdigit(tabIn[i+j-l]) ) // lire d'un decalage de l tant qu'on a des digit
@@ -173,12 +189,15 @@ void triPoly(char * tabIn, int * tabOut)
  */
 void afficherCommande(void)
 {
-	printf("P : declare le polynome qui suit P\n");
+	printf("P : Commande de declaration d'un polynome\n");
 	printf("A : Commande d'addition\n");
 	printf("M : Commande de multiplication\n");
-	printf("Q : Commande de division\n");
-	printf("E : Commande de sortie de programme \n");
+	printf("Q : Commande de division euclidienne\n");
+	printf("F : Commande de factorisation\n");
 	printf("D : Affiche les polynomes saisis\n");
+	printf("H : Affiche les commandes disponibles\n");
+	printf("E : Commande de sortie de programme \n");
+	
 }
 
 /*
@@ -186,15 +205,6 @@ void afficherCommande(void)
  */
 int main(void)
 {
-	/*int N[] = {2,-3,1,0,0,0,0,0,0,0};  
-	int D[] = {2,1,0,0,0,0,0,0,0,0}; 
-	int res[10] ;
-	init(res, 10);
-	factorisation(N,res,2);*/
-	//printf("D :");ecriture(D);
-	//printf("Q :");ecriture(Q);
-	//printf("reste :");ecriture(reste);
-	printf("Entrer un polynôme pour commencer en le précédant de la lettre P \n (n'utiliser que la variable x) \n");
 	int res[DEGREMAX] ;
 	int Q[DEGREMAX];
 	int R[DEGREMAX];
@@ -207,15 +217,15 @@ int main(void)
 	char commande = ' ';
 	polynome p;
 	
-	initDouble(p, NBMAXPOLY);
-	init(res, DEGREMAX);
-	init(Q, DEGREMAX);
-	init(R, DEGREMAX);
-	afficherCommande();
+	initDouble(p, NBMAXPOLY); /* on initialise tout nos polynomes a 0 */
+	afficherCommande(); /* on affiche les commande disponibles */
 	while( exit == 0 )
 	{
 		i = 0;
 		initChar(saisie, ENTREEMAX);
+		init(res, DEGREMAX);
+		init(Q, DEGREMAX);
+		init(R, DEGREMAX);
 		while( (c = getchar()) != '\n')		// on recupere le contenu
 		{
 			if(c != ' ' && c != '*')
@@ -227,21 +237,26 @@ int main(void)
 				i++;
 			}
 		}
-		switch(commande){
-			case 'P':
+		switch(commande){ /* on test quelle commande a été entrée */
+			case 'P': /* Commande de declaration d'un polynome */
 				i = 0;
 				char nom = 'a';
 				printf("nom du polynôme\n");
-				while( (d = getchar()) != '\n' )
+				while( (d = getchar()) != '\n' ) /* recuperation du nom de polynome */
 				{
-					nom = d;
+					if( i == 0 ) /* on recupera que le 1er caractere */
+					{
+						nom = d;
+					}
+					i++;
 				}
-				if((nom-'A')< 0 || (nom-'A')>26){
+				if((nom-'A')< 0 || (nom-'A')>26){ /* on empeche l'utilisateur de mettre autre chose qu'une majuscule */
 					printf("Besoin d'un nom de polynôme en majuscule\n");
 					break;
 				}
 				printf("Saisissez votre polynome\n");
-				while( (c = getchar()) != '\n' )
+				i = 0;
+				while( (c = getchar()) != '\n' ) /* recuperation du polynome */
 				{
 					if( (i<ENTREEMAX) )
 					{
@@ -249,32 +264,32 @@ int main(void)
 						i++;
 					}
 				}
-				if(verifPoly(saisie) == 0){
+				if(verifPoly(saisie) == 0){ /* test si le polynome est valide */
 					printf("mauvaise syntaxe pour le polynome \n");
 				}
 				else{
-					triPoly(saisie, p[nom-'A']);
+					triPoly(saisie, p[nom-'A']); /* si oui, on peut analyser le polynome */
 				}
 				break;
 			
-			case 'E':
+			case 'E': /* fonction de sortie de la boucle principale */
 				exit = 1;
 				break;
 			
-			case 'D':
+			case 'D': /* fonction d'affichage des polynomes entrés */
 				for(int i = 0; i < NBMAXPOLY; i++)
 				{
-					if(degre(p[i])!= (-1))
+					if(degre(p[i])!= (-1)) /* on affiche les polynomes qui sont differents de 0 */
 					{
-						printf("Polynome %c ", i+'A');ecriture(p[i]);
+						printf("Polynome %c ", i+'A');ecriture(p[i]);printf("\n"); /* on indique aussi le nom du polynome */
 					}
 				}
 				break;
 			
-			case 'A':
+			case 'A': /* fonction d'addition de 2 polynomes */
 				i = 0;
 				printf("Saisir le nom des deux polynomes a additionner \n");
-				while( (c = getchar()) != '\n' )
+				while( (c = getchar()) != '\n' ) /* on demande quels polynomes sont a additionner */
 				{
 					if( (c != ' ') )
 					{
@@ -282,14 +297,14 @@ int main(void)
 						i++;
 					}
 				}
-				somme(p[parametre[0] - 'A'], p[parametre[1] - 'A'], res);
-				ecriture(res);
+				somme(p[parametre[0] - 'A'], p[parametre[1] - 'A'], res); /* on somme */
+				ecriture(res);printf("\n"); /* on affiche le resultat */
 				break;
 			
-			case 'M':
+			case 'M': /* fonction de multiplication de 2 polynomes */
 				i = 0;
 				printf("Saisir le nom des deux polynomes a multiplier\n");
-				while( (c = getchar()) != '\n' )
+				while( (c = getchar()) != '\n' ) /* on demande quels polynomes sont a additionner */
 				{
 					if( (c != ' ') )
 					{
@@ -297,15 +312,15 @@ int main(void)
 						i++;
 					}
 				}
-				produit(p[parametre[0] - 'A'], p[parametre[1] - 'A'], res);
-				ecriture(res);
+				produit(p[parametre[0] - 'A'], p[parametre[1] - 'A'], res); /* on multiplie */
+				ecriture(res);printf("\n"); /* on affiche le resultat */
 				break;
 			
-			case 'Q':
+			case 'Q': /* fonction de division euclidienne */
 				i = 0;
 				printf("Saisir le nom des deux polynomes \n");
-				printf("Le deuxieme polynome divise \n");
-				while( (c = getchar()) != '\n' )
+				printf("Remarque : Le deuxieme polynome divise \n");
+				while( (c = getchar()) != '\n' ) /* on recupere les deux polynomes */
 				{
 					if( (c != ' ') )
 					{
@@ -313,14 +328,47 @@ int main(void)
 						i++;
 					}
 				}
-				divEucl(p[parametre[0] - 'A'], p[parametre[1] - 'A'], Q, R);
-				init(res, DEGREMAX);
-				printf("Quotient : ");ecriture(Q);
-				printf("Reste : ");ecriture(R);
+				divEucl(p[parametre[0] - 'A'], p[parametre[1] - 'A'], Q, R); 
+				/* on fait la division euclidienne,
+				 * Q recupere le quotient, R le reste */
+				printf("Quotient : ");ecriture(Q);printf("\n");
+				printf("Reste : ");ecriture(R);printf("\n");
 				break;
-			
-			default :
-				printf("mauvaise saisie de l'action\n");
+				
+			case 'F':
+				i = 0;
+				printf("Saisir le nom du polynome a factoriser \n");
+				while( (c = getchar()) != '\n' ) /* on recupere le polynome */
+				{
+					if( (c != ' ') )
+					{
+						if( i == 0 )
+						{
+							parametre[i] = c;
+						}
+						i++;
+					}
+				}
+				printf("saisir une racine du polynome\n");
+				i = 0;
+				while( (c = getchar()) != '\n' ) /* on recupere la racine */
+				{
+					if( (c != ' ') )
+					{
+						if( i == 0 )
+						{
+							parametre[i+1] = c;
+						}
+						i++;
+					}
+				}
+				factorisation( p[parametre[0] - 'A'], res, parametre[1] - '0' );/* on factorise, l'affichage est géré par la fonction */
+				break;
+			case 'H':
+				afficherCommande();
+				break;
+			default : /* si la commande n'est pas reconnue, on le signal */
+				printf("Commande inconnue\n");
 		}
 	}
 	return 0;

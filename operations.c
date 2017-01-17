@@ -190,6 +190,7 @@ void factorisation(int* p,int* res, int a){
 	}
 	printf("le résultat de la factorisation est (x-%d)(", a);
 	ecriture(res);
+	printf(")\n");
 }
 
 
@@ -217,7 +218,7 @@ void ecriture (int* p){
 			if(p[i] == 1) printf("x^%d",i);
 			else printf("%dx^%d", p[i], i);
 			
-			while(p[i-zeroCounter]==0 && (zeroCounter <= i)) zeroCounter++;
+			while( (p[i-zeroCounter]==0) && (zeroCounter <= i)) zeroCounter++;
 			if(p[i-zeroCounter] > 0)
 			{
 				printf("+");
@@ -240,7 +241,6 @@ void ecriture (int* p){
 			printf("%d",p[i]);
 		}
 	}
-	printf("\n");
 }
 
 void horner(){}
