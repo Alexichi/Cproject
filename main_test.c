@@ -1,19 +1,7 @@
-/*
- * main_test.c
- *
- */
-
-
 /* Lignes de commandes de contruction avec plusieurs fichiers c
- * gcc -Wall -c *.c -lsndfile -lncurses -std=gnu99 -lm
- * gcc -Wall -std=gnu99 -o main_test *.o   -lncurses -lm
+ * gcc -Wall -c *.c  -lm
+ * gcc -Wall -o main_test *.o -lm
  */
-
-
-/* Le degré du polynôme sera l'indice du tableau et la valeur 
- * à cet indice sera le coefficient devant la variable x
- */
-
 
 #include "operations.h"
 
@@ -55,24 +43,30 @@ void initChar(char tab[], int size)
  * Paramètre : tab, le tableau contenant tous les caractères tapés sur l'entrée standard (terminal)
  */
 int verifPoly(char * tab){
+	/* Le polynôme ne doit pas commencer par ^ */
 	if(tab[0] == '^'){
 			return 0;
 	}
 	for(int i = 0; i < ENTREEMAX-1; i++){
+		/* Le polynôme ne doit pas être constitué de caractères autres que un nombre + - x ^ espace */
 		if(!(isdigit(tab[i])) && tab[i]!='+' && tab[i]!='-' && tab[i]!='x' && tab[i]!='^' && tab[i]!=' '){
 			printf("%c\n", tab[i]);
 			return 0;
 		}
+		/* Le polynôme ne doit avoir de caractères spéciaux à la suite comme ++ ou ^^ */
 		else if((tab[i] == '+' && tab[i+1] == '+') || (tab[i] == '-' && tab[i+1] == '-') || (tab[i] == 'x' && tab[i+1] == 'x') ||
 				(tab[i] == '^' && tab[i+1] == '^')){
 				return 0;
 		}
+		/* Le polynôme ne doit pas avoir une expression de la forme x^+ ou x^x*/
 		else if(tab[i] == '^' && !(isdigit(tab[i+1]))){
 			return 0;
 		}
+		/* Le polynôme ne doit pas avoir une expression de la forme +^ ou 2^ */
 		else if(tab[i+1] == '^' && tab[i] != 'x'){
 			return 0;
 		}
+		/* Le polynôme ne doit pas avoir une expression de la forme 2x2 */
 		else if(tab[i] == 'x' && (tab[i+1] != '+' && tab[i+1] != '^') && tab[i+1] != ' '){
 			return 0;
 		}
@@ -194,6 +188,7 @@ void afficherCommande(void)
 	printf("M : Commande de multiplication\n");
 	printf("Q : Commande de division euclidienne\n");
 	printf("F : Commande de factorisation\n");
+	printf("G : Commande de dérivation \n");
 	printf("D : Affiche les polynomes saisis\n");
 	printf("H : Affiche les commandes disponibles\n");
 	printf("E : Commande de sortie de programme \n");
@@ -364,10 +359,26 @@ int main(void)
 				}
 				factorisation( p[parametre[0] - 'A'], res, parametre[1] - '0' );/* on factorise, l'affichage est géré par la fonction */
 				break;
+			case 'G':
+				i = 0;
+				printf("Saisir le nom du polynome a deriver \n");
+				while( (c = getchar()) != '\n' ) /* on recupere le polynome */
+				{
+					if( (c != ' ') )
+					{
+						if( i == 0 )
+						{
+							parametre[i] = c;
+						}
+						i++;
+					}
+				}
+				derivation( p[parametre[0] - 'A'], res);/* On dérive */
+				ecriture(res);printf("\n"); /* on affiche le resultat */
 			case 'H':
 				afficherCommande();
 				break;
-			default : /* si la commande n'est pas reconnue, on le signal */
+			default : /* si la commande n'est pas reconnue, on le signale */
 				printf("Commande inconnue\n");
 		}
 	}
