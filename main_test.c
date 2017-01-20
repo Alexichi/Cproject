@@ -375,6 +375,7 @@ int main(void)
 				}
 				derivation( p[parametre[0] - 'A'], res);/* On dérive */
 				ecriture(res);printf("\n"); /* on affiche le resultat */
+				break;
 			case 'H':
 				afficherCommande();
 				break;
